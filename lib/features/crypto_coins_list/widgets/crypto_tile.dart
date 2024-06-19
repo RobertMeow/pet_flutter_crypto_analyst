@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_analyst/features/repository/models.dart';
+import 'package:crypto_analyst/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 
 class CryproCoinTile extends StatelessWidget {
@@ -27,7 +28,7 @@ class CryproCoinTile extends StatelessWidget {
       ),
       trailing: const Icon(CupertinoIcons.arrow_right),
       onTap: () {
-        // AutoRouter.of(context).push(CryptoCoinRoute(coin: coin));
+        AutoRouter.of(context).push(CryptoCoinRoute(coin: coin));
         // Navigator.of(context).pushNamed(
         //   '/coin',
         //   arguments: coin,

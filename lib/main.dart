@@ -29,14 +29,13 @@ class CryptoAnalystApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp.router(
       title: 'Crypto Analyst',
-      theme: darkTheme,
       routerConfig: _appRouter.config(
         navigatorObservers: () => [
           TalkerRouteObserver(talker),
         ],
       ),
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         DefaultCupertinoLocalizations.delegate,
         DefaultMaterialLocalizations.delegate
       ],

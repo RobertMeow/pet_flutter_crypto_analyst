@@ -15,13 +15,61 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CryptoCoinRoute.name: (routeData) {
+      final args = routeData.argsAs<CryptoCoinRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CryptoCoinPage(
+          key: args.key,
+          coin: args.coin,
+        ),
+      );
+    },
     CryptoListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const CryptoListPage(),
       );
-    }
+    },
   };
+}
+
+/// generated route for
+/// [CryptoCoinPage]
+class CryptoCoinRoute extends PageRouteInfo<CryptoCoinRouteArgs> {
+  CryptoCoinRoute({
+    Key? key,
+    required CryptoCoinModel coin,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CryptoCoinRoute.name,
+          args: CryptoCoinRouteArgs(
+            key: key,
+            coin: coin,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CryptoCoinRoute';
+
+  static const PageInfo<CryptoCoinRouteArgs> page =
+      PageInfo<CryptoCoinRouteArgs>(name);
+}
+
+class CryptoCoinRouteArgs {
+  const CryptoCoinRouteArgs({
+    this.key,
+    required this.coin,
+  });
+
+  final Key? key;
+
+  final CryptoCoinModel coin;
+
+  @override
+  String toString() {
+    return 'CryptoCoinRouteArgs{key: $key, coin: $coin}';
+  }
 }
 
 /// generated route for
