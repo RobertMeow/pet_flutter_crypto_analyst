@@ -1,10 +1,15 @@
-import 'package:auto_route/annotations.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
-import 'package:talker/talker.dart';
-import 'package:talker_flutter/talker_flutter.dart';
+import 'dart:async';
 
+import 'package:auto_route/annotations.dart';
+import 'package:crypto_analyst/features/bloc/crypto_coin_bloc.dart';
+import 'package:crypto_analyst/features/crypto_coins_list/widgets/crypto_dialog.dart';
+import 'package:crypto_analyst/features/crypto_coins_list/widgets/crypto_navigation_bar.dart';
+import 'package:crypto_analyst/features/crypto_coins_list/widgets/crypto_tile.dart';
+import 'package:crypto_analyst/features/repository/crypto_abstract_repository_api.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 @RoutePage()
 class CryptoListPage extends StatefulWidget {
@@ -15,52 +20,56 @@ class CryptoListPage extends StatefulWidget {
 }
 
 class _CryptoListPageState extends State<CryptoListPage> {
-  final GetIt getIt = GetIt.instance;
+  final _cryptoCoinBloc = CryptoCoinBloc(
+    GetIt.I<CryptoAbstractRepositoryApi>(),
+  );
 
   @override
   void initState() {
-    // GetIt.I.get<Dio>();
+    _cryptoCoinBloc.add(LoadCryptoCoins());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = CupertinoTheme.of(context);
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(
-                'assets/img/icon_app.png',
-                width: 32,
-                height: 32,
-              ),
-            ),
-            const SizedBox(width: 8.0),
-            Text(
-              'Crypto Coins List',
-              style: theme.textTheme.navTitleTextStyle,
-            ),
-          ],
-        ),
-        trailing: GestureDetector(
-          child: const Icon(
-            CupertinoIcons.info,
-            size: 24,
-          ),
-          onTap: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => TalkerScreen(talker: getIt<Talker>())
-              ),
-            );
+      navigationBar: const CryptoNavigationBar(),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          final completer = Completer();
+          _cryptoCoinBloc.add(LoadCryptoCoins(completer: completer));
+          return completer.future;
+        },
+        child: BlocConsumer<CryptoCoinBloc, CryptoCoinState>(
+          bloc: _cryptoCoinBloc,
+          listener: (context, state) {
+            if (state is CryptoCoinLoadingFailure) {
+              showMessageDialog(
+                  "Something went wrong", "Please try again later", context,
+                  () => _cryptoCoinBloc.add(LoadCryptoCoins()));
+            }
+          },
+          builder: (context, state) {
+            if (state is CryptoCoinLoaded) {
+              return ListView.separated(
+                padding: const EdgeInsets.only(top: 16),
+                itemCount: state.coinsList.coins.length,
+                separatorBuilder: (context, index) => const Divider(
+                  color: CupertinoColors.quaternarySystemFill,
+                ),
+                itemBuilder: (context, i) {
+                  final coin = state.coinsList.coins[i];
+                  return CryproCoinTile(coin: coin);
+                },
+              );
+            }
+            if (state is CryptoCoinLoadingFailure) {
+              return const SizedBox();
+            }
+            return const Center(child: CupertinoActivityIndicator());
           },
         ),
       ),
-      child: Container(),
     );
   }
 }

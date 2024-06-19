@@ -12,13 +12,13 @@ part 'crypto_coin_state.dart';
 
 class CryptoCoinBloc extends Bloc<CryptoCoinEvent, CryptoCoinState> {
   CryptoCoinBloc(this.abstractRepositoryApi) : super(CryptoCoinInitial()) {
-    on<FetchCryptoCoins>(_load);
+    on<LoadCryptoCoins>(_load);
   }
 
   final CryptoAbstractRepositoryApi abstractRepositoryApi;
 
   Future<void> _load(
-      FetchCryptoCoins event,
+      LoadCryptoCoins event,
       Emitter<CryptoCoinState> emit,
       ) async {
     try {

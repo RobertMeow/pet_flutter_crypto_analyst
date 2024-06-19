@@ -1,15 +1,11 @@
-import 'package:crypto_analyst/settings/bloc/bloc.dart';
-import 'package:crypto_analyst/settings/dio/dio.dart';
-import 'package:crypto_analyst/settings/firebase/firebase.dart';
-import 'package:crypto_analyst/settings/router/router.dart';
-import 'package:crypto_analyst/settings/service_locator.dart';
-import 'package:crypto_analyst/settings/talker/talker.dart';
-import 'package:crypto_analyst/settings/theme/theme.dart';
+import 'package:crypto_analyst/features/repository/models.dart';
+import 'package:crypto_analyst/settings/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   initFirebase();
@@ -17,7 +13,9 @@ void main() {
   final dio = initDio(talker);
   initBloc(talker);
 
-  setupLocator(talker, dio);
+  final Box<CryptoCoinsModel> cryptoCoinsBox = await initHive();
+
+  setupLocator(talker, dio, cryptoCoinsBox);
   runApp(CryptoAnalystApp(talker: talker));
 }
 

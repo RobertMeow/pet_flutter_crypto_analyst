@@ -2,8 +2,8 @@ part of 'crypto_coin_bloc.dart';
 
 abstract class CryptoCoinEvent extends Equatable {}
 
-class FetchCryptoCoins extends CryptoCoinEvent {
-  FetchCryptoCoins({
+class LoadCryptoCoins extends CryptoCoinEvent {
+  LoadCryptoCoins({
     this.completer,
   });
 
