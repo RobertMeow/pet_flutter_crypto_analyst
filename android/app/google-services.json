@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "89072666688",
+    "project_id": "cryptoanalyst-ce97d",
+    "storage_bucket": "cryptoanalyst-ce97d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89072666688:android:e5ed16043331cf0decf7a5",
+        "android_client_info": {
+          "package_name": "dev.berht.cryptoAnalyst"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAjIiEDA3btCW_hgBFoQOAe6w9haUnuJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
